@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/permissions/{id}', [App\Http\Controllers\PermissionController::class, 'show'])->name('permissions.show');
     Route::get('/permissions/{id}/edit', [App\Http\Controllers\PermissionController::class, 'edit'])->name('permissions.edit');
     Route::put('/permissions/{id}', [App\Http\Controllers\PermissionController::class, 'update'])->name('permissions.update');
-    Route::delete('/permissions/{id}', [App\Http\Controllers\PermissionController::class, 'destroy'])->name('permissions.destroy');
+    Route::delete('/permissions', [App\Http\Controllers\PermissionController::class, 'destroy'])->name('permissions.destroy');
 });
 
 require __DIR__.'/auth.php';

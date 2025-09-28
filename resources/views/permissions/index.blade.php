@@ -30,11 +30,8 @@
                             <td class="px-4 py-2">{{ $permission->created_at->format('d M, Y') }}</td>
                             <td class="px-4 py-2 text-center flex space-x-2 justify-center">
                                 <a href="{{ route('permissions.edit', $permission->id) }}" class="bg-gray-800 text-white rounded-md px-2 py-1">Edit</a>
-                                <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this permission?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-600 text-white rounded-md px-2 py-1">Delete</button>
-                                </form>
+                                <a href="javascript:void(0)"
+                                onclick="deletePermission({{ $permission->id }})" class="bg-red-800 text-white rounded-md px-2 py-1">Delete</a>
 
                             </td>
                         </tr>
@@ -51,4 +48,27 @@
             </div>
         </div>
     </div>
+    <x-slot name="script">
+        <script type=text/javascript>
+        function deletePermission(id) {
+            if (confirm("Are you sure you want to delete this permission?")) {
+                $.ajax({
+                    url: '{{ route("permissions.destroy") }}',
+                    type: 'DELETE',
+                    data: {
+                        id: id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(result) {
+                        // On success, reload the page or remove the deleted row from the table
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the permission.');
+                    }
+                });
+            }
+        }
+        </script>
+    </x-slot>
 </x-app-layout>
