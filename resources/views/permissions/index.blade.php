@@ -13,10 +13,41 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gray-200 text-left">
+                        <th class="px-4 py-2" width="5%">#</th>
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2" width="20%">Created At</th>
+                        <th class="px-4 py-2 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($permissions as $permission)
+                        <tr class="border-b">
+                            <td class="px-4 py-2">{{ $permission->id }}</td>
+                            <td class="px-4 py-2">{{ $permission->name }}</td>
+                            <td class="px-4 py-2">{{ $permission->created_at->format('d M, Y') }}</td>
+                            <td class="px-4 py-2 text-center flex space-x-2 justify-center">
+                                <a href="{{ route('permissions.edit', $permission->id) }}" class="bg-gray-800 text-white rounded-md px-2 py-1">Edit</a>
+                                <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this permission?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 text-white rounded-md px-2 py-1">Delete</button>
+                                </form>
 
-                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-4 py-2 text-center">No permissions found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                {{ $permissions->links() }}
             </div>
         </div>
     </div>
