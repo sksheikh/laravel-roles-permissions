@@ -19,9 +19,10 @@ class PermissionController extends Controller
         return view('permissions.create');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return view('permissions.edit');
+        $permission = Permission::findOrFail($id);
+        return view('permissions.edit', compact('permission'));
     }
 
     public function show()
@@ -50,7 +51,24 @@ class PermissionController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate and update the permission
+        $permission = Permission::findOrFail($id);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|min:3|unique:permissions,name,'.$permission->id,
+            ]
+        );
+
+        if($validator->fails()) {
+            return redirect()->route('permissions.edit', $permission->id)->withErrors($validator)->withInput();
+        }
+
+        // Update the permission
+        $permission->name = $request->name;
+        $permission->save();
+
+        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully');
     }
     public function destroy($id)
     {
