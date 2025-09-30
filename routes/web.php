@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
     Route::put('/roles/{id}', [App\Http\Controllers\RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.destroy');
+
+    // Article Routes
+    Route::resource('articles', App\Http\Controllers\ArticleController::class)->except(['destroy']);
+    Route::delete('/articles', [App\Http\Controllers\ArticleController::class, 'destroy'])->name('articles.destroy');
 });
 
 require __DIR__.'/auth.php';
