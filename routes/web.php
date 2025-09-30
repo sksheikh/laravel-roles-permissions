@@ -20,10 +20,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/permissions', [App\Http\Controllers\PermissionController::class, 'index'])->name('permissions.index');
     Route::get('/permissions/create', [App\Http\Controllers\PermissionController::class, 'create'])->name('permissions.create');
     Route::post('/permissions', [App\Http\Controllers\PermissionController::class, 'store'])->name('permissions.store');
-    Route::get('/permissions/{id}', [App\Http\Controllers\PermissionController::class, 'show'])->name('permissions.show');
     Route::get('/permissions/{id}/edit', [App\Http\Controllers\PermissionController::class, 'edit'])->name('permissions.edit');
     Route::put('/permissions/{id}', [App\Http\Controllers\PermissionController::class, 'update'])->name('permissions.update');
     Route::delete('/permissions', [App\Http\Controllers\PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+    // Role Routes
+    Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/create', [App\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [App\Http\Controllers\RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{id}', [App\Http\Controllers\RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/roles', [App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.destroy');
+
+    // Article Routes
+    Route::resource('articles', App\Http\Controllers\ArticleController::class)->except(['destroy']);
+    Route::delete('/articles', [App\Http\Controllers\ArticleController::class, 'destroy'])->name('articles.destroy');
 });
 
 require __DIR__.'/auth.php';
